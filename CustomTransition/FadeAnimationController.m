@@ -81,8 +81,8 @@
 - (void)finishInteractiveTransition
 {
     NSLog(@"finishInteractiveTransition");
-    [self.transitionContext completeTransition:YES];
     [self.transitionContext finishInteractiveTransition];
+    [self.transitionContext completeTransition:YES];
 }
 
 // updateなどから呼ばれ続ける？
