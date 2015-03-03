@@ -28,7 +28,7 @@ UIGestureRecognizerDelegate
     self.view.backgroundColor = UIColor.blueColor;
     
     UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    pan.edges = UIRectEdgeLeft;
+    pan.edges    = UIRectEdgeLeft;
     pan.delegate = self;
     [self.view addGestureRecognizer:pan];
 }
@@ -37,7 +37,9 @@ UIGestureRecognizerDelegate
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UINavigationControllerDelegate
 
-// アニメーション開始時に呼ばれる
+/**
+ *  It'll be called when starting an animation of transition.
+ */
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
@@ -80,7 +82,7 @@ UIGestureRecognizerDelegate
     self.nextViewController.disabled = YES;
     self.nextViewController.view.backgroundColor = UIColor.redColor;
     
-    // transitionDelegateはモーダルビューの遷移で使用する
+    // transitionDelegate is to be used in modal view transition.
     // self.nextViewController.transitioningDelegate = self;
     
     self.navigationController.delegate = self.nextViewController;

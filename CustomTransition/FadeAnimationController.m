@@ -118,18 +118,23 @@
  */
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     return 3.0;
 }
 
 
 /**
  *  Implementation of a transition animation.
+ *  This method is called once in starting transition.
  *
  *  @param transitionContext
  */
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    NSLog(@"animateTransition");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Set up views for a transition.
     
     // Get from/to view controllers in a context.
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -138,7 +143,7 @@
     // Get a container view in a context.
     UIView *containerView = [transitionContext containerView];
     
-    // A trantion to view controller's view add onto a container view.
+    // Constracting views for a transition animation.
     [containerView insertSubview:toVC.view
                     belowSubview:fromVC.view];
     
