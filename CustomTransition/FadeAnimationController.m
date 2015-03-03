@@ -3,16 +3,17 @@
 
 @implementation FadeAnimationController
 
+/**
+ *  生成メソッド
+ */
 + (instancetype)create
 {
     return [[self.class alloc] init];
 }
-
 + (instancetype)createAsSwipe
 {
     return [[self.class alloc] initAsSwipe];
 }
-
 - (instancetype)initAsSwipe
 {
     self = [super init];
@@ -22,11 +23,23 @@
     return self;
 }
 
+
+/**
+ *  アニメーションのduration
+ *
+ *  @return duration time
+ */
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     return 3.0;
 }
 
+
+/**
+ *  トランジションアニメーションの実装
+ *
+ *  @param transitionContext
+ */
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     NSLog(@"animateTransition");
@@ -59,7 +72,7 @@
 
 - (void)updateInteractiveTransition:(CGFloat)percent
 {
-    NSLog(@"update");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
     [self.transitionContext updateInteractiveTransition:percent];
     
@@ -76,7 +89,7 @@
 
 - (void)cancelInteractiveTransition
 {
-    NSLog(@"cancelInteractiveTransition");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
     UIViewController *fromVC = [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     CGRect initFrame  = [self.transitionContext initialFrameForViewController:fromVC];
@@ -88,15 +101,18 @@
 
 - (void)finishInteractiveTransition
 {
-    NSLog(@"finishInteractiveTransition");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.transitionContext finishInteractiveTransition];
     [self.transitionContext completeTransition:YES];
 }
 
-// updateなどから呼ばれ続ける？
+
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark - UIViewControllerInteractiveTransitioning
+
 - (void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    NSLog(@"startinteractiveTransition");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     self.transitionContext = transitionContext;
     [self animateTransition:transitionContext];
 }
