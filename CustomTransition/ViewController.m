@@ -156,7 +156,7 @@ UIGestureRecognizerDelegate
              gesture.state == UIGestureRecognizerStateCancelled) {
         CGPoint translation = [gesture translationInView:gesture.view];
         CGPoint velocity    = [gesture velocityInView:gesture.view];
-        CGFloat percent     = ABS(translation.x + velocity.x * 0.25 / width);
+        CGFloat percent     = ABS(translation.x + velocity.x * 0.25) / width;
         
         if (percent < 0.5 || gesture.state == UIGestureRecognizerStateCancelled) {
             [self.animationController cancelInteractiveTransition];

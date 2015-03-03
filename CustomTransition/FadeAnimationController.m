@@ -67,15 +67,23 @@
     UIViewController *fromVC = [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     // UIViewController *toVC   = [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    CGRect frame      = fromVC.view.frame;
-    frame.origin.x    += 1;
+    CGRect initFrame      = [self.transitionContext initialFrameForViewController:fromVC];
+    CGRect frame = fromVC.view.frame;
+    
+    frame.origin.x = initFrame.size.width * percent;
     fromVC.view.frame = frame;
 }
 
 - (void)cancelInteractiveTransition
 {
     NSLog(@"cancelInteractiveTransition");
+    
+    UIViewController *fromVC = [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    CGRect initFrame  = [self.transitionContext initialFrameForViewController:fromVC];
+    fromVC.view.frame = initFrame;
+    
     [self.transitionContext cancelInteractiveTransition];
+    [self.transitionContext completeTransition:NO];
 }
 
 - (void)finishInteractiveTransition
