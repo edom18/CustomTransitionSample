@@ -1,10 +1,8 @@
 
 #import "ViewController.h"
 
-#import "ViewController2.h"
 #import "FadeAnimationController.h"
 
-/////////////////////////////////////////////////////////////////////////////
 
 @interface ViewController ()
 <
@@ -14,8 +12,6 @@ UIGestureRecognizerDelegate
 >
 
 @property (nonatomic, strong) ViewController *nextViewController;
-
-@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *interactionController;
 
 @property (nonatomic, assign) BOOL disabled;
 
@@ -30,63 +26,16 @@ UIGestureRecognizerDelegate
     [super viewDidLoad];
     
     self.view.backgroundColor = UIColor.blueColor;
-    self.interactionController = [[UIPercentDrivenInteractiveTransition alloc] init];
     
     UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     pan.edges = UIRectEdgeLeft;
     pan.delegate = self;
     [self.view addGestureRecognizer:pan];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        self.nextViewController = [[UIViewController alloc] init];
-//        self.nextViewController.view.backgroundColor = UIColor.redColor;
-//        self.nextViewController.transitioningDelegate = self;
-//        self.navigationController.delegate = self;
-//        [self.navigationController pushViewController:self.nextViewController animated:YES];
-//        // [self.navigationController presentViewController:self.nextViewController animated:YES completion:nil];
-//        
-////        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-////            [self.navigationController popViewControllerAnimated:YES];
-////            // [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-////        });
-//    });
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UINavigationControllerDelegate
-
-/**
- *  ナビゲーションコントローラの遷移が始まるとき
- */
-//- (void)navigationController:(UINavigationController *)navigationController
-//      willShowViewController:(UIViewController *)viewController
-//                    animated:(BOOL)animated
-//{
-//    
-//}
-
-
-/**
- *  ナビゲーションコントローラの遷移が終わったとき
- */
-//- (void)navigationController:(UINavigationController *)navigationController
-//       didShowViewController:(UIViewController *)viewController
-//                    animated:(BOOL)animated
-//{
-//    
-//}
-
-/////////////////////////////////////////////////////////////////////////////
-
-// どこから呼ばれる？
-//- (id<UIViewControllerAnimatedTransitioning>) animationControllerForPresentedController:(UIViewController *)presented
-//                                                                   presentingController:(UIViewController *)presenting
-//                                                                       sourceController:(UIViewController *)source
-//{
-//    return [[FadeAnimationController alloc] init];
-//}
-
 
 // アニメーション開始時に呼ばれる
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -94,8 +43,6 @@ UIGestureRecognizerDelegate
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
-    NSLog(@"hoge");
-    
     if (operation == UINavigationControllerOperationPop) {
         if (self.disabled) {
             self.animationController = [FadeAnimationController createAsSwipe];
@@ -110,8 +57,6 @@ UIGestureRecognizerDelegate
 {
     NSLog(@"interactionControllerForAnimationController");
     return self.animationController;
-//    return self.interactionController;
-     // return [[FadeAnimationController alloc] init];
 }
 
 
