@@ -14,7 +14,6 @@
 		5C8C98F61AA579A100442241 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C8C98F51AA579A100442241 /* Images.xcassets */; };
 		5C8C98F91AA579A100442241 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C8C98F71AA579A100442241 /* LaunchScreen.xib */; };
 		5C8C99051AA579A100442241 /* CustomTransitionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C99041AA579A100442241 /* CustomTransitionTests.m */; };
-		5C8C99101AA58EFC00442241 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C990F1AA58EFC00442241 /* ViewController2.m */; };
 		5C8C99131AA5921400442241 /* FadeAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C99121AA5921400442241 /* FadeAnimationController.m */; };
 /* End PBXBuildFile section */
 
@@ -42,8 +41,6 @@
 		5C8C98FE1AA579A100442241 /* CustomTransitionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CustomTransitionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C8C99031AA579A100442241 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C8C99041AA579A100442241 /* CustomTransitionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTransitionTests.m; sourceTree = "<group>"; };
-		5C8C990E1AA58EFC00442241 /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
-		5C8C990F1AA58EFC00442241 /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
 		5C8C99111AA5921400442241 /* FadeAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FadeAnimationController.h; sourceTree = "<group>"; };
 		5C8C99121AA5921400442241 /* FadeAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeAnimationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,8 +92,6 @@
 				5C8C98F51AA579A100442241 /* Images.xcassets */,
 				5C8C98F71AA579A100442241 /* LaunchScreen.xib */,
 				5C8C98E81AA579A100442241 /* Supporting Files */,
-				5C8C990E1AA58EFC00442241 /* ViewController2.h */,
-				5C8C990F1AA58EFC00442241 /* ViewController2.m */,
 				5C8C99111AA5921400442241 /* FadeAnimationController.h */,
 				5C8C99121AA5921400442241 /* FadeAnimationController.m */,
 			);
@@ -230,7 +225,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C8C98F11AA579A100442241 /* ViewController.m in Sources */,
-				5C8C99101AA58EFC00442241 /* ViewController2.m in Sources */,
 				5C8C99131AA5921400442241 /* FadeAnimationController.m in Sources */,
 				5C8C98EE1AA579A100442241 /* AppDelegate.m in Sources */,
 				5C8C98EB1AA579A100442241 /* main.m in Sources */,
@@ -424,6 +418,7 @@
 				5C8C990A1AA579A100442241 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5C8C990B1AA579A100442241 /* Build configuration list for PBXNativeTarget "CustomTransitionTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +427,7 @@
 				5C8C990D1AA579A100442241 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
