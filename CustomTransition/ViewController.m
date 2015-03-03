@@ -118,6 +118,9 @@ UIGestureRecognizerDelegate
 /////////////////////////////////////////////////////////////////////////////
 #pragma UIGestureRecognizerDelegate
 
+/**
+ *  UIScreenEdgePanGestureRecognizerのハンドラ
+ */
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     return YES;
