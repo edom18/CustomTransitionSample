@@ -115,13 +115,6 @@ UIGestureRecognizerDelegate
 }
 
 
-// どこから呼ばれる？
-//- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id<UIViewControllerAnimatedTransitioning>)animator
-//{
-//    return self.interactionController;
-//}
-
-
 - (void)touchesBegan:(NSSet *)touches
            withEvent:(UIEvent *)event
 {
@@ -133,7 +126,10 @@ UIGestureRecognizerDelegate
     self.nextViewController = [[ViewController alloc] init];
     self.nextViewController.disabled = YES;
     self.nextViewController.view.backgroundColor = UIColor.redColor;
-//    self.nextViewController.transitioningDelegate = self;
+    
+    // transitionDelegateはモーダルビューの遷移で使用する
+    // self.nextViewController.transitioningDelegate = self;
+    
     self.navigationController.delegate = self.nextViewController;
     self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -141,16 +137,23 @@ UIGestureRecognizerDelegate
 }
 
 
+/**
+ *  Pan Gestureのハンドラ
+ */
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer *)gesture
 {
     CGFloat width = gesture.view.frame.size.width;
     
+    static UINavigationController *navigationController;
     if (gesture.state == UIGestureRecognizerStateBegan) {
+        navigationController = self.navigationController;
         [self.navigationController popViewControllerAnimated:YES];
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gesture translationInView:gesture.view];
-         [self.animationController updateInteractiveTransition:ABS(translation.x / width)];
+        CGFloat percent = ABS(translation.x / width);
+        navigationController.navigationBar.alpha = 1.0 - percent;
+        [self.animationController updateInteractiveTransition:percent];
     }
     else if (gesture.state == UIGestureRecognizerStateEnded ||
              gesture.state == UIGestureRecognizerStateCancelled) {
@@ -165,16 +168,6 @@ UIGestureRecognizerDelegate
             [self.animationController finishInteractiveTransition];
         }
     }
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-#pragma mark - UIViewControllerAnimatedTransitioning
-
-// どこから呼ばれる？
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    return [[FadeAnimationController alloc] init];
 }
 
 /////////////////////////////////////////////////////////////////////////////
