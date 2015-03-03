@@ -13,7 +13,7 @@ UIGestureRecognizerDelegate
 
 @property (nonatomic, strong) ViewController *nextViewController;
 
-@property (nonatomic, assign) BOOL disabled;
+@property (nonatomic, assign) BOOL isGesture;
 
 @property (nonatomic, strong) FadeAnimationController *animationController;
 
@@ -48,12 +48,11 @@ UIGestureRecognizerDelegate
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
     if (operation == UINavigationControllerOperationPop) {
-        if (self.disabled) {
-            self.animationController = [FadeAnimationController createAsSwipe];
-            return self.animationController;
-        }
+        self.animationController = [FadeAnimationController createAsSwipe];
+        return self.animationController;
     }
     
+    // To use by default.
     return nil;
 }
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -73,13 +72,7 @@ UIGestureRecognizerDelegate
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    if (self.disabled) {
-        [self.navigationController popViewControllerAnimated:YES];
-        return;
-    }
-    
     self.nextViewController = [[ViewController alloc] init];
-    self.nextViewController.disabled = YES;
     self.nextViewController.view.backgroundColor = UIColor.redColor;
     
     // transitionDelegate is to be used in modal view transition.
@@ -103,6 +96,7 @@ UIGestureRecognizerDelegate
     
     static UINavigationController *navigationController;
     if (gesture.state == UIGestureRecognizerStateBegan) {
+        self.isGesture = YES;
         navigationController = self.navigationController;
         [self.navigationController popViewControllerAnimated:YES];
     }
