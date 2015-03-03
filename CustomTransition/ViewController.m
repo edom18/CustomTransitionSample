@@ -43,6 +43,8 @@ UIGestureRecognizerDelegate
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     if (operation == UINavigationControllerOperationPop) {
         if (self.disabled) {
             self.animationController = [FadeAnimationController createAsSwipe];
@@ -55,14 +57,20 @@ UIGestureRecognizerDelegate
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
                          interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
 {
-    NSLog(@"interactionControllerForAnimationController");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     return self.animationController;
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark - Event handler
+
 - (void)touchesBegan:(NSSet *)touches
            withEvent:(UIEvent *)event
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     if (self.disabled) {
         [self.navigationController popViewControllerAnimated:YES];
         return;
@@ -87,6 +95,8 @@ UIGestureRecognizerDelegate
  */
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer *)gesture
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     CGFloat width = gesture.view.frame.size.width;
     
     static UINavigationController *navigationController;
@@ -115,14 +125,17 @@ UIGestureRecognizerDelegate
     }
 }
 
+
 /////////////////////////////////////////////////////////////////////////////
-#pragma UIGestureRecognizerDelegate
+#pragma mark - UIGestureRecognizerDelegate
 
 /**
  *  UIScreenEdgePanGestureRecognizerのハンドラ
  */
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
     return YES;
 }
 
