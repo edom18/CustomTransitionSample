@@ -13,9 +13,11 @@ UIGestureRecognizerDelegate
 
 @property (nonatomic, strong) ViewController *nextViewController;
 
-@property (nonatomic, assign) BOOL isGesture;
-
 @property (nonatomic, strong) FadeAnimationController *animationController;
+
+@property (nonatomic, strong) UIButton *button;
+
+@property (nonatomic, assign) BOOL isGesture;
 
 @end
 
@@ -28,7 +30,15 @@ UIGestureRecognizerDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = UIColor.blueColor;
+    self.button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.button.frame = CGRectMake(0, 0, 250, 50);
+    [self.button addTarget:self
+                    action:@selector(touched:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [self.button setTitle:@"Touch to add a ViewController"
+                 forState:UIControlStateNormal];
+    [self.view addSubview:self.button];
+    self.button.center = self.view.center;
     
     UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     pan.edges    = UIRectEdgeLeft;
@@ -97,13 +107,16 @@ UIGestureRecognizerDelegate
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - Event handler
 
-- (void)touchesBegan:(NSSet *)touches
-           withEvent:(UIEvent *)event
+- (void)touched:(id)sender
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    const CGFloat r = arc4random_uniform(100) / 100.0;
+    const CGFloat g = arc4random_uniform(100) / 100.0;
+    const CGFloat b = arc4random_uniform(100) / 100.0;
+    
     self.nextViewController = [[ViewController alloc] init];
-    self.nextViewController.view.backgroundColor = UIColor.redColor;
+    self.nextViewController.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
     
     // transitionDelegate is to be used in modal view transition.
     // self.nextViewController.transitioningDelegate = self;
@@ -114,7 +127,7 @@ UIGestureRecognizerDelegate
 
 
 /**
- *  Pan Gestureのハンドラ
+ *  Pan Gesture's handler
  */
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer *)gesture
 {
@@ -158,7 +171,7 @@ UIGestureRecognizerDelegate
 #pragma mark - UIGestureRecognizerDelegate
 
 /**
- *  UIScreenEdgePanGestureRecognizerのハンドラ
+ *  UIScreenEdgePanGestureRecognizer's handler
  */
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
