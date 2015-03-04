@@ -75,7 +75,10 @@ UIGestureRecognizerDelegate
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
     if (operation == UINavigationControllerOperationPop) {
-        self.animationController = [FadeAnimationController createAsSwipe];
+        self.animationController = [FadeAnimationController create];
+        if (self.isGesture) {
+            [self.animationController startAsSwipe];
+        }
         return self.animationController;
     }
     

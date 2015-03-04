@@ -8,45 +8,39 @@ UIViewControllerInteractiveTransitioning
 >
 
 /**
- *  スワイプかどうか
+ *  is swipe?
  */
-@property (nonatomic, assign) BOOL isSwipe;
+@property (nonatomic, assign, readonly) BOOL isSwipe;
 
 
 /**
- *  Transition contextを保持
- */
-@property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
-
-
-/**
- *  生成メソッド
+ *  A create method.
  */
 + (instancetype)create;
 
 
 /**
- *  生成メソッド
+ *  Start as swipe mode.
  */
-+ (instancetype)createAsSwipe;
+- (void)startAsSwipe;
 
 
 /**
  *  Update transition context
  *
- *  @param percent 遷移の進捗度を表す値（0.0〜1.0）
+ *  @param percent progress of transition (0.0 - 1.0)
  */
 - (void)updateInteractiveTransition:(CGFloat)percent;
 
 
 /**
- *  遷移をキャンセルする
+ *  Canceling current transition.
  */
 - (void)cancelInteractiveTransition;
 
 
 /**
- *  遷移を完了する
+ *  Finishing current transition.
  */
 - (void)finishInteractiveTransition;
 

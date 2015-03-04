@@ -3,29 +3,46 @@
 
 @interface FadeAnimationController()
 
+/**
+ *  is swipe?
+ */
+@property (nonatomic, assign, readwrite) BOOL isSwipe;
+
+/**
+ *  Delta time using in update animation.
+ */
 @property (nonatomic, assign) CGFloat deltaTime;
 
+/**
+ *  Store a transition context.
+ */
+@property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
+
 @end
+
 
 
 @implementation FadeAnimationController
 
 /**
- *  生成メソッド
+ *  A create method.
  */
 + (instancetype)create
 {
     return [[self.class alloc] init];
 }
-+ (instancetype)createAsSwipe
-{
-    return [[self.class alloc] initAsSwipe];
-}
-- (instancetype)initAsSwipe
+
+
+/**
+ *  Initialize
+ *
+ *  @return Instance
+ */
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.isSwipe   = YES;
+        self.isSwipe   = NO;
         self.deltaTime = 0.0;
     }
     return self;
@@ -34,6 +51,15 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - Instance methods
+
+/**
+ *  Start as swipe mode.
+ */
+- (void)startAsSwipe
+{
+    self.isSwipe = YES;
+}
+
 
 /**
  *  Update interactive transition
@@ -75,6 +101,8 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    self.isSwipe = NO;
+    
     UIViewController *fromVC = [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     CGRect initFrame  = [self.transitionContext initialFrameForViewController:fromVC];
     fromVC.view.frame = initFrame;
@@ -93,6 +121,9 @@
 - (void)finishInteractiveTransition
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    self.isSwipe = NO;
+    
     [self.transitionContext finishInteractiveTransition];
     [self.transitionContext completeTransition:YES];
 }
@@ -155,9 +186,9 @@
     [containerView insertSubview:toVC.view
                     belowSubview:fromVC.view];
     
-//    if (self.isSwipe) {
-//        return;
-//    }
+    if (self.isSwipe) {
+        return;
+    }
     
     // Reset delta time.
     self.deltaTime = 0.0;
