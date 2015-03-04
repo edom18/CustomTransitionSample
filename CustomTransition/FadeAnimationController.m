@@ -1,6 +1,12 @@
 
 #import "FadeAnimationController.h"
 
+@interface FadeAnimationController()
+
+@property (nonatomic, assign) CGFloat deltaTime;
+
+@end
+
 @implementation FadeAnimationController
 
 /**
@@ -151,15 +157,38 @@
         return;
     }
     
-    [UIView animateWithDuration:[self transitionDuration:transitionContext]
+    self.deltaTime = 0.0;
+    const CGFloat duration = [self transitionDuration:transitionContext];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.16
+                                                      target:self
+                                                    selector:@selector(update)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    [timer fire];
+    
+    [UIView animateWithDuration:duration
                      animations:^{
                          // Peform animations.
                          fromVC.view.alpha = 0.0;
                      }
                      completion:^(BOOL finished) {
                          // Notice end of transition.
+                         [transitionContext finishInteractiveTransition];
                          [transitionContext completeTransition:YES];
+                         [timer invalidate];
                      }];
+}
+
+/**
+ *  Update percent for a transition.
+ */
+- (void)update
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    self.deltaTime += 0.16;
+    const CGFloat duration = [self transitionDuration:self.transitionContext];
+    [self updateInteractiveTransition:self.deltaTime / duration];
 }
 
 @end
