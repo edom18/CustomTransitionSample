@@ -2,6 +2,7 @@
 #import "ViewController.h"
 
 #import "FadeAnimationController.h"
+#import "D3AnimationController.h"
 
 
 @interface ViewController ()
@@ -18,6 +19,8 @@ UIGestureRecognizerDelegate
 @property (nonatomic, strong) UIButton *button;
 
 @property (nonatomic, assign) BOOL isGesture;
+
+@property (nonatomic, strong) D3AnimationController *d3AnimationController;
 
 @end
 
@@ -44,6 +47,8 @@ UIGestureRecognizerDelegate
     pan.edges    = UIRectEdgeLeft;
     pan.delegate = self;
     [self.view addGestureRecognizer:pan];
+    
+    self.d3AnimationController = [D3AnimationController create];
 }
 
 
