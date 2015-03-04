@@ -121,6 +121,8 @@
  *
  *  This method perform two methods on a transitionContext are `finishInteractiveTransition` and `completeTransition:`.
  *  Both methods are required to invoke when a trainsition is finished.
+ *
+ *  IMPORTANT: `completeTransition:` method must be called after `finishInteractiveTransition`.
  */
 - (void)finishInteractiveTransition
 {
