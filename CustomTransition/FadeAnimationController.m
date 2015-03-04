@@ -167,7 +167,7 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    return 1.0;
+    return 1;
 }
 
 
