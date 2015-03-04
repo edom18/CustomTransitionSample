@@ -125,6 +125,7 @@ UIGestureRecognizerDelegate
     static UINavigationController *navigationController;
     if (gesture.state == UIGestureRecognizerStateBegan) {
         self.isGesture = YES;
+        
         navigationController = self.navigationController;
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -132,13 +133,16 @@ UIGestureRecognizerDelegate
         CGPoint translation = [gesture translationInView:gesture.view];
         CGFloat percent = ABS(translation.x / width);
         navigationController.navigationBar.alpha = 1.0 - percent;
+        
         [self.animationController updateInteractiveTransition:percent];
     }
     else if (gesture.state == UIGestureRecognizerStateEnded ||
              gesture.state == UIGestureRecognizerStateCancelled) {
+        self.isGesture = NO;
+        
         CGPoint translation = [gesture translationInView:gesture.view];
         CGPoint velocity    = [gesture velocityInView:gesture.view];
-        CGFloat percent     = ABS(translation.x + velocity.x * 0.25) / width;
+        CGFloat percent     = MAX(0, translation.x + velocity.x * 0.25) / width;
         
         if (percent < 0.5 || gesture.state == UIGestureRecognizerStateCancelled) {
             [self.animationController cancelInteractiveTransition];
