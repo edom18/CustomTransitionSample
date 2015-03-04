@@ -43,6 +43,10 @@ UIGestureRecognizerDelegate
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    self.navigationController.delegate                                 = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -57,10 +61,6 @@ UIGestureRecognizerDelegate
                     animated:(BOOL)animated
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    self.navigationController.delegate                                 = self;
-    self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 
