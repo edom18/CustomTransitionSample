@@ -22,6 +22,9 @@ UIGestureRecognizerDelegate
 
 @implementation ViewController
 
+/**
+ *  View did load.
+ */
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -34,8 +37,32 @@ UIGestureRecognizerDelegate
 }
 
 
+/**
+ *  View did appear.
+ */
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UINavigationControllerDelegate
+
+/**
+ *  It'll be called when this shown in lifecycle.
+ *  This is invoked after `viewDidAppear:` method has called.
+ */
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    self.navigationController.delegate                                 = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+}
+
 
 /**
  *  It'll be called when starting an animation of transition.
@@ -78,10 +105,8 @@ UIGestureRecognizerDelegate
     // transitionDelegate is to be used in modal view transition.
     // self.nextViewController.transitioningDelegate = self;
     
-    self.navigationController.delegate = self.nextViewController;
-    self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    [self.navigationController pushViewController:self.nextViewController animated:YES];
+    [self.navigationController pushViewController:self.nextViewController
+                                         animated:YES];
 }
 
 
