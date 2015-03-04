@@ -158,7 +158,8 @@
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    return 3.0;
+    
+    return 1.0;
 }
 
 
