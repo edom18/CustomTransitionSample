@@ -7,6 +7,7 @@
 
 @end
 
+
 @implementation FadeAnimationController
 
 /**
@@ -24,7 +25,8 @@
 {
     self = [super init];
     if (self) {
-        self.isSwipe = YES;
+        self.isSwipe   = YES;
+        self.deltaTime = 0.0;
     }
     return self;
 }
@@ -153,42 +155,51 @@
     [containerView insertSubview:toVC.view
                     belowSubview:fromVC.view];
     
-    if (self.isSwipe) {
-        return;
-    }
+//    if (self.isSwipe) {
+//        return;
+//    }
     
+    // Reset delta time.
     self.deltaTime = 0.0;
-    const CGFloat duration = [self transitionDuration:transitionContext];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.16
-                                                      target:self
-                                                    selector:@selector(update)
-                                                    userInfo:nil
-                                                     repeats:YES];
-    [timer fire];
     
+    const CGFloat duration = [self transitionDuration:transitionContext];
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self
+                                                             selector:@selector(update:)];
+    NSRunLoop *runLoop = NSRunLoop.mainRunLoop;
+    [displayLink addToRunLoop:runLoop forMode:NSDefaultRunLoopMode];
     [UIView animateWithDuration:duration
                      animations:^{
                          // Peform animations.
                          fromVC.view.alpha = 0.0;
                      }
                      completion:^(BOOL finished) {
+                         // Stop the display link.
+                         [displayLink invalidate];
+                         
                          // Notice end of transition.
                          [transitionContext finishInteractiveTransition];
                          [transitionContext completeTransition:YES];
-                         [timer invalidate];
                      }];
 }
 
 /**
  *  Update percent for a transition.
  */
-- (void)update
+- (void)update:(CADisplayLink *)displayLink
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    // NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.deltaTime += 0.16;
-    const CGFloat duration = [self transitionDuration:self.transitionContext];
-    [self updateInteractiveTransition:self.deltaTime / duration];
+    const CGFloat   targetDuration = [self transitionDuration:self.transitionContext];
+    const CGFloat   duration       = displayLink.duration;
+    const NSInteger interval       = displayLink.frameInterval;
+    const CGFloat   time           = duration / interval;
+    
+    self.deltaTime += time;
+    
+    // NSLog(@"deltaTime: %@", @(self.deltaTime));
+    
+    const CGFloat percent = self.deltaTime / targetDuration;
+    [self updateInteractiveTransition:percent];
 }
 
 @end
