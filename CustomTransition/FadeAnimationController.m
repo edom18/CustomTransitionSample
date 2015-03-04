@@ -79,11 +79,15 @@
     UIViewController *toVC   = [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     // Do any transition with view controllers.
-    CGRect initFrame      = [self.transitionContext initialFrameForViewController:fromVC];
-    CGRect frame = fromVC.view.frame;
+    const CGRect initFrameFromVC = [self.transitionContext initialFrameForViewController:fromVC];
+    CGRect fromFrame   = fromVC.view.frame;
+    fromFrame.origin.x = initFrameFromVC.size.width * percent;
+    fromVC.view.frame  = fromFrame;
     
-    frame.origin.x = initFrame.size.width * percent;
-    fromVC.view.frame = frame;
+    const CGFloat delta = initFrameFromVC.size.width / 3.5;
+    CGRect toFrame   = toVC.view.frame;
+    toFrame.origin.x = -delta * MAX(0.0, (1.0 - percent));
+    toVC.view.frame  = toFrame;
 }
 
 
@@ -123,6 +127,10 @@
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
     self.isSwipe = NO;
+    
+    UIViewController *toVC = [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    CGRect frame    = [self.transitionContext finalFrameForViewController:toVC];
+    toVC.view.frame = frame;
     
     [self.transitionContext finishInteractiveTransition];
     [self.transitionContext completeTransition:YES];
