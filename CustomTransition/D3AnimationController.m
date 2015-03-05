@@ -183,7 +183,7 @@ static D3AnimationController *instance = nil;
         }
     }
     else if ([fromVC isKindOfClass:ViewController.class]) {
-        if ([self.toVC isKindOfClass:TransparentViewController.class]) {
+        if ([toVC isKindOfClass:TransparentViewController.class]) {
             // Other -> transparent
             return D3AnimationControllerTransitionTypeToTransparent;
         }
