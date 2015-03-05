@@ -344,6 +344,16 @@ static D3AnimationController *instance = nil;
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    self.isSwipe = NO;
+    
+    self.toVC.view.bounds    = [self.transitionContext initialFrameForViewController:self.toVC];
+    self.toVC.view.transform = CGAffineTransformIdentity;
+    self.toVC.view.alpha     = 1.0;
+    
+    self.fromVC.view.bounds    = [self.transitionContext initialFrameForViewController:self.fromVC];
+    self.fromVC.view.transform = CGAffineTransformIdentity;
+    self.fromVC.view.alpha     = 1.0;
+    
     [self.transitionContext cancelInteractiveTransition];
     [self.transitionContext completeTransition:NO];
 }
@@ -360,9 +370,11 @@ static D3AnimationController *instance = nil;
     
     self.toVC.view.frame     = [self.transitionContext finalFrameForViewController:self.toVC];
     self.toVC.view.transform = CGAffineTransformIdentity;
+    self.toVC.view.alpha     = 1.0;
     
     self.fromVC.view.frame     = [self.transitionContext finalFrameForViewController:self.fromVC];
     self.fromVC.view.transform = CGAffineTransformIdentity;
+    self.fromVC.view.alpha     = 1.0;
     
     [self.transitionContext finishInteractiveTransition];
     [self.transitionContext completeTransition:YES];
