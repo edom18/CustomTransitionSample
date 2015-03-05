@@ -438,8 +438,8 @@ static D3AnimationController *instance = nil;
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    [self prepareForAnimation];
     self.transitionContext = transitionContext;
+    [self prepareForAnimation];
     [self animateTransition:transitionContext];
 }
 
