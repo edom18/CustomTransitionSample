@@ -1,7 +1,16 @@
 
 #import "D3AnimationController.h"
 
+#import "ViewController.h"
+#import "TransparentViewController.h"
+
 @interface D3AnimationController ()
+
+typedef NS_ENUM(NSInteger, D3AnimationControllerTransitionType) {
+    D3AnimationControllerTransitionTypeDefault = 0,
+    D3AnimationControllerTransitionTypeToTransparent,
+    D3AnimationControllerTransitionTypeFromTransparent,
+};
 
 @property (nonatomic, assign) CGFloat time;
 @property (nonatomic, assign) CGFloat progressPercent;
@@ -12,6 +21,8 @@
 @property (nonatomic, strong) UINavigationController *navigationController;
 
 @property (nonatomic, assign) UINavigationControllerOperation currentOperation;
+
+@property (nonatomic, assign) D3AnimationControllerTransitionType type;
 
 /**
  *  Edge pan gesture.
@@ -121,6 +132,27 @@ static D3AnimationController *instance = nil;
     self.time            = 0.0;
     self.progressPercent = 0.0;
     self.isCompleted     = NO;
+    
+    if ([self.fromVC isKindOfClass:TransparentViewController.class]) {
+        if ([self.toVC isKindOfClass:TransparentViewController.class]) {
+            // Transparent -> transparent
+            self.type = D3AnimationControllerTransitionTypeDefault;
+        }
+        else {
+            // Transparent -> other
+            self.type = D3AnimationControllerTransitionTypeFromTransparent;
+        }
+    }
+    else if ([self.fromVC isKindOfClass:ViewController.class]) {
+        if ([self.toVC isKindOfClass:TransparentViewController.class]) {
+            // Other -> transparent
+            self.type = D3AnimationControllerTransitionTypeToTransparent;
+        }
+        else if ([self.toVC isKindOfClass:ViewController.class]) {
+            // other -> other
+            self.type = D3AnimationControllerTransitionTypeDefault;
+        }
+    }
 }
 
 
@@ -216,6 +248,29 @@ static D3AnimationController *instance = nil;
 }
 
 
+/**
+ *  Update navigation bar style.
+ */
+- (void)updateNavigationBar
+{
+    switch (self.type) {
+        case D3AnimationControllerTransitionTypeDefault: {
+            break;
+        }
+        case D3AnimationControllerTransitionTypeToTransparent: {
+            const CGFloat alpha = 1.0 - self.progressPercent;
+            self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            break;
+        }
+        case D3AnimationControllerTransitionTypeFromTransparent: {
+            const CGFloat alpha = self.progressPercent;
+            self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            break;
+        }
+    }
+}
+
+
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 
@@ -265,6 +320,8 @@ static D3AnimationController *instance = nil;
     fromVC.view.alpha               = fromAlpha;
     CGAffineTransform fromTransform = CGAffineTransformMakeScale(base2 - delta, base2 - delta);
     fromVC.view.transform           = fromTransform;
+    
+    [self updateNavigationBar];
 }
 
 
@@ -316,6 +373,8 @@ static D3AnimationController *instance = nil;
     toVC.view.alpha               = toAlpha;
     CGAffineTransform toTransform = CGAffineTransformMakeScale(base2 + delta, base2 + delta);
     toVC.view.transform           = toTransform;
+    
+    [self updateNavigationBar];
 }
 
 
