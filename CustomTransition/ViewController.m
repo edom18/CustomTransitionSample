@@ -3,6 +3,7 @@
 
 #import "FadeAnimationController.h"
 #import "D3AnimationController.h"
+#import "TransparentViewController.h"
 
 
 @interface ViewController ()
@@ -15,8 +16,6 @@ UIGestureRecognizerDelegate
 @property (nonatomic, strong) ViewController *nextViewController;
 
 @property (nonatomic, strong) FadeAnimationController *animationController;
-
-@property (nonatomic, strong) UIButton *button;
 
 @property (nonatomic, assign) BOOL isGesture;
 
@@ -33,15 +32,28 @@ UIGestureRecognizerDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.button.frame = CGRectMake(0, 0, 250, 50);
-    [self.button addTarget:self
-                    action:@selector(touched:)
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button1.frame = CGRectMake(0, 0, 250, 50);
+    [button1 addTarget:self
+                    action:@selector(addNormal:)
           forControlEvents:UIControlEventTouchUpInside];
-    [self.button setTitle:@"Touch to add a ViewController"
+    [button1 setTitle:@"Touch to add a ViewController"
                  forState:UIControlStateNormal];
-    [self.view addSubview:self.button];
-    self.button.center = self.view.center;
+    [self.view addSubview:button1];
+    button1.center = self.view.center;
+    
+    // Button2
+    UIButton *button2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button2.frame = CGRectMake(0, 0, 300, 50);
+    [button2 addTarget:self
+                    action:@selector(addTransparent:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [button2 setTitle:@"Touch to add a TransaparentViewController"
+                 forState:UIControlStateNormal];
+    [self.view addSubview:button2];
+    CGPoint center = self.view.center;
+    center.y += 60;
+    button2.center = center;
     
     /////////////////////////////////////////////////////////////////////////////
     
@@ -114,7 +126,7 @@ UIGestureRecognizerDelegate
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - Event handler
 
-- (void)touched:(id)sender
+- (void)addNormal:(id)sender
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
@@ -130,6 +142,19 @@ UIGestureRecognizerDelegate
     
     [self.navigationController pushViewController:self.nextViewController
                                          animated:YES];
+}
+
+- (void)addTransparent:(id)sender
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    const CGFloat r = arc4random_uniform(100) / 100.0;
+    const CGFloat g = arc4random_uniform(100) / 100.0;
+    const CGFloat b = arc4random_uniform(100) / 100.0;
+    
+    TransparentViewController *vc = [TransparentViewController create];
+    [self.navigationController pushViewController:vc animated:YES];
+    vc.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
 }
 
 

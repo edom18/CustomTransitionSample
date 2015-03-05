@@ -16,6 +16,7 @@
 		5C8C99051AA579A100442241 /* CustomTransitionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C99041AA579A100442241 /* CustomTransitionTests.m */; };
 		5C8C99131AA5921400442241 /* FadeAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C99121AA5921400442241 /* FadeAnimationController.m */; };
 		5CDC5C641AA7CEA100C6C498 /* D3AnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC5C631AA7CEA100C6C498 /* D3AnimationController.m */; };
+		5CDC5C991AA8675400C6C498 /* TransparentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC5C981AA8675400C6C498 /* TransparentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,8 @@
 		5C8C99121AA5921400442241 /* FadeAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeAnimationController.m; sourceTree = "<group>"; };
 		5CDC5C621AA7CEA100C6C498 /* D3AnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = D3AnimationController.h; sourceTree = "<group>"; };
 		5CDC5C631AA7CEA100C6C498 /* D3AnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = D3AnimationController.m; sourceTree = "<group>"; };
+		5CDC5C971AA8675400C6C498 /* TransparentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentViewController.h; sourceTree = "<group>"; };
+		5CDC5C981AA8675400C6C498 /* TransparentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +102,8 @@
 				5C8C99121AA5921400442241 /* FadeAnimationController.m */,
 				5CDC5C621AA7CEA100C6C498 /* D3AnimationController.h */,
 				5CDC5C631AA7CEA100C6C498 /* D3AnimationController.m */,
+				5CDC5C971AA8675400C6C498 /* TransparentViewController.h */,
+				5CDC5C981AA8675400C6C498 /* TransparentViewController.m */,
 			);
 			path = CustomTransition;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				5C8C98EE1AA579A100442241 /* AppDelegate.m in Sources */,
 				5CDC5C641AA7CEA100C6C498 /* D3AnimationController.m in Sources */,
 				5C8C98EB1AA579A100442241 /* main.m in Sources */,
+				5CDC5C991AA8675400C6C498 /* TransparentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
