@@ -73,9 +73,13 @@ UIGestureRecognizerDelegate
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.navigationController.delegate                                 = self.d3AnimationController;
-    self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-    self.navigationController.interactivePopGestureRecognizer.delegate = self.d3AnimationController;
+    static BOOL firstTime = NO;
+    if (!firstTime) {
+        firstTime = YES;
+        self.navigationController.delegate                                 = self.d3AnimationController;
+        self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self.d3AnimationController;
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////

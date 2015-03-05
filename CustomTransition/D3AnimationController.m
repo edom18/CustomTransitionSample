@@ -7,7 +7,9 @@
 @property (nonatomic, assign) CGFloat progressPercent;
 @property (nonatomic, assign, readwrite) BOOL isSwipe;
 @property (nonatomic, assign           ) BOOL isCompleted;
+
 @property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @property (nonatomic, assign) UINavigationControllerOperation currentOperation;
 
@@ -22,14 +24,22 @@
 
 @implementation D3AnimationController
 
+/**
+ *  A create method.
+ */
 + (instancetype)create
 {
     return [[self.class alloc] init];
 }
-- (instancetype)init
++ (instancetype)createWithNavigationController:(UINavigationController *)navigationController
+{
+    return [[self.class alloc] initWithNavigationController:navigationController];
+}
+- (instancetype)initWithNavigationController:(UINavigationController *)navigationController
 {
     self = [super init];
     if (self) {
+        self.navigationController = navigationController;
         self.isSwipe     = NO;
         self.isCompleted = NO;
         
@@ -37,8 +47,16 @@
                                                                                 action:@selector(handlePan:)];
         self.edgePanGesture.edges    = UIRectEdgeLeft;
         self.edgePanGesture.delegate = self;
+        
+        if (self.navigationController) {
+            //
+        }
     }
     return self;
+}
+- (instancetype)init
+{
+    return [self initWithNavigationController:nil];
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -92,7 +110,35 @@
  */
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer *)gesture
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    CGFloat width = gesture.view.frame.size.width;
+    
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        [self startAsSwipe];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (gesture.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gesture translationInView:gesture.view];
+        CGFloat percent = ABS(translation.x / width);
+        // self.navigationController.navigationBar.alpha = 1.0 - percent;
+        
+        [self updateInteractiveTransition:percent];
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded ||
+             gesture.state == UIGestureRecognizerStateCancelled) {
+        CGPoint translation = [gesture translationInView:gesture.view];
+        CGPoint velocity    = [gesture velocityInView:gesture.view];
+        CGFloat percent     = MAX(0, translation.x + velocity.x * 0.25) / width;
+        
+        if (percent < 0.5 || gesture.state == UIGestureRecognizerStateCancelled) {
+            [self cancelInteractiveTransition];
+        }
+        else {
+            [self finishInteractiveTransition];
+        }
+    }
 }
 
 
