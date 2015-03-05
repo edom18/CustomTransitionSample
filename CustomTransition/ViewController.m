@@ -43,12 +43,14 @@ UIGestureRecognizerDelegate
     [self.view addSubview:self.button];
     self.button.center = self.view.center;
     
-    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    pan.edges    = UIRectEdgeLeft;
-    pan.delegate = self;
-    [self.view addGestureRecognizer:pan];
+    /////////////////////////////////////////////////////////////////////////////
     
     self.d3AnimationController = [D3AnimationController create];
+    
+    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    pan.edges    = UIRectEdgeLeft;
+    pan.delegate = self.d3AnimationController;
+    [self.view addGestureRecognizer:pan];
 }
 
 
@@ -59,9 +61,9 @@ UIGestureRecognizerDelegate
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.navigationController.delegate                                 = self;
+    self.navigationController.delegate                                 = self.d3AnimationController;
     self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self.d3AnimationController;
 }
 
 /////////////////////////////////////////////////////////////////////////////
