@@ -217,10 +217,8 @@
                     belowSubview:fromVC.view];
     
     // for `To VC`
-    toVC.view.bounds = [self.transitionContext initialFrameForViewController:self.fromVC]; //containerView.frame;
-    CGAffineTransform toTransform = CGAffineTransformMakeScale(0.9, 0.9);
-    toVC.view.transform           = toTransform;
-    toVC.view.alpha   = 0.0;
+    toVC.view.bounds = [self.transitionContext initialFrameForViewController:self.fromVC];//containerView.frame;
+    toVC.view.alpha  = 0.0;
     
     [self startAnimation];
 }
@@ -234,7 +232,7 @@
     UIViewController *fromVC = self.fromVC;
     UIViewController *toVC   = self.toVC;
     
-    const CGFloat base  = 0.9;
+    const CGFloat base  = 0.1;
     const CGFloat base2 = 1.0 - base;
     const CGFloat delta = base * self.progressPercent;
     
