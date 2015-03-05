@@ -1,6 +1,8 @@
 
 #import "TransparentViewController.h"
 
+#import "D3AnimationController.h"
+
 @interface TransparentViewController ()
 
 @property (nonatomic, strong) UIButton *button;
@@ -38,6 +40,15 @@
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
     self.navigationItem.title = @"透過ビューコントローラ";
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    D3AnimationController *controller = D3AnimationController.defaultController;
+    controller.navigationController = self.navigationController;
+    [self.view addGestureRecognizer:controller.edgePanGesture];
 }
 
 
