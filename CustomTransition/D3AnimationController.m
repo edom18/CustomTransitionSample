@@ -28,6 +28,11 @@
     return self;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+
+/**
+ *  Start with swipe mode.
+ */
 - (void)startAsSwipe
 {
     self.isSwipe = YES;
@@ -38,15 +43,30 @@
     
 }
 
+
+/**
+ *  Canceling transiton
+ */
 - (void)cancelInteractiveTransition
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    [self.transitionContext cancelInteractiveTransition];
+    [self.transitionContext completeTransition:NO];
 }
 
+
+/**
+ *  Finishing transition
+ */
 - (void)finishInteractiveTransition
 {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    [self.transitionContext finishInteractiveTransition];
+    [self.transitionContext completeTransition:YES];
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UINavigationControllerDelegate
@@ -58,9 +78,13 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.currentOperation = operation;
+    if (operation == UINavigationControllerOperationPush ||
+        operation == UINavigationControllerOperationPop) {
+        self.currentOperation = operation;
+        return self;
+    }
     
-    return self;
+    return nil;
 }
 
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -111,6 +135,17 @@
 
 
 /**
+ *  Start animation
+ */
+- (void)startAnimation
+{
+    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self
+                                                             selector:@selector(updateProgress:)];
+    [displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSDefaultRunLoopMode];
+}
+
+
+/**
  *  Update progress.
  *
  *  @param displayLink
@@ -130,6 +165,14 @@
     if (self.progressPercent >= 1.0) {
         [displayLink invalidate];
         self.progressPercent = 1.0;
+        [self finishInteractiveTransition];
+    }
+    
+    if (self.currentOperation == UINavigationControllerOperationPush) {
+        [self updatePushAnimation];
+    }
+    else if (self.currentOperation == UINavigationControllerOperationPop) {
+        [self updatePopAnimation];
     }
 }
 
@@ -147,22 +190,17 @@
     [containerView insertSubview:toVC.view
                     belowSubview:fromVC.view];
     
-    CADisplayLink *displayLink = [CADisplayLink displayLinkWithTarget:self
-                                                             selector:@selector(updatePushAnimation:)];
-    [displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSDefaultRunLoopMode];
-    
     toVC.view.alpha = 0.0;
+    
+    [self startAnimation];
 }
+
 
 /**
  *  Update push animation
- *
- *  @param displayLink
  */
-- (void)updatePushAnimation:(CADisplayLink *)displayLink
+- (void)updatePushAnimation
 {
-    [self updateProgress:displayLink];
-    
     UIViewController *fromVC = self.fromVC;
     UIViewController *toVC   = self.toVC;
     
@@ -173,27 +211,39 @@
     toVC.view.alpha   = toAlpha;
 }
 
+
+/**
+ *  Start pop animation.
+ */
 - (void)popAnimation
 {
-    UIViewController *fromVC = [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toVC   = [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = self.fromVC;
+    UIViewController *toVC   = self.toVC;
     
     UIView *containerView = self.transitionContext.containerView;
     
     [containerView insertSubview:toVC.view
-                    belowSubview:fromVC.view];
+                    aboveSubview:fromVC.view];
     
     toVC.view.alpha = 0.0;
     
-    [UIView animateWithDuration:[self transitionDuration:self.transitionContext]
-                     animations:^{
-                         toVC.view.alpha   = 1.0;
-                         fromVC.view.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished) {
-                         [self.transitionContext finishInteractiveTransition];
-                         [self.transitionContext completeTransition:YES];
-                     }];
+    [self startAnimation];
+}
+
+
+/**
+ *  Update pop animation
+ */
+- (void)updatePopAnimation
+{
+    UIViewController *fromVC = self.fromVC;
+    UIViewController *toVC   = self.toVC;
+    
+    const CGFloat fromAlpha = 1.0 - self.progressPercent;
+    const CGFloat toAlpha   = self.progressPercent;
+    
+    fromVC.view.alpha = fromAlpha;
+    toVC.view.alpha   = toAlpha;
 }
 
 
@@ -204,7 +254,8 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.time = 0.0;
+    self.time            = 0.0;
+    self.progressPercent = 0.0;
     self.transitionContext = transitionContext;
     [self animateTransition:transitionContext];
 }
