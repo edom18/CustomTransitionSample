@@ -103,11 +103,13 @@ static D3AnimationController *instance = nil;
 #pragma mark - Instance methods.
 
 /**
- *  Start with swipe mode.
+ *  Start with swipe mode as pop.
  */
 - (void)startAsSwipe
 {
     self.isSwipe = YES;
+        
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -135,13 +137,10 @@ static D3AnimationController *instance = nil;
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
         [self startAsSwipe];
-        
-        [self.navigationController popViewControllerAnimated:YES];
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gesture translationInView:gesture.view];
         CGFloat percent = ABS(translation.x / width);
-        // self.navigationController.navigationBar.alpha = 1.0 - percent;
         
         [self updateInteractiveTransition:percent];
     }
