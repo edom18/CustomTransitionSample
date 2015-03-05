@@ -24,22 +24,25 @@
 
 @implementation D3AnimationController
 
-/**
- *  A create method.
- */
-+ (instancetype)create
+static D3AnimationController *instance = nil;
+
+@synthesize navigationController = _navigationController;
+
++ (instancetype)defaultController
 {
-    return [[self.class alloc] init];
+    @synchronized(self.class) {
+        if (!instance) {
+            instance = [[self.class alloc] init];
+        }
+        
+        return instance;
+    }
 }
-+ (instancetype)createWithNavigationController:(UINavigationController *)navigationController
-{
-    return [[self.class alloc] initWithNavigationController:navigationController];
-}
-- (instancetype)initWithNavigationController:(UINavigationController *)navigationController
+
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.navigationController = navigationController;
         self.isSwipe     = NO;
         self.isCompleted = NO;
         
@@ -47,17 +50,33 @@
                                                                                 action:@selector(handlePan:)];
         self.edgePanGesture.edges    = UIRectEdgeLeft;
         self.edgePanGesture.delegate = self;
-        
-        if (self.navigationController) {
-            //
-        }
     }
     return self;
 }
-- (instancetype)init
+
+/////////////////////////////////////////////////////////////////////////////
+#pragma -
+
+- (UINavigationController *)navigationController
 {
-    return [self initWithNavigationController:nil];
+    return _navigationController;
 }
+- (void)setNavigationController:(UINavigationController *)navigationController
+{
+    if (_navigationController == navigationController) {
+        return;
+    }
+    
+    _navigationController.delegate                                 = nil;
+    _navigationController.interactivePopGestureRecognizer.delegate = nil;
+    
+    _navigationController = navigationController;
+    
+    _navigationController.delegate                                 = self;
+    _navigationController.interactivePopGestureRecognizer.enabled  = YES;
+    _navigationController.interactivePopGestureRecognizer.delegate = self;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - Dynamic properties.

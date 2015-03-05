@@ -54,15 +54,6 @@ UIGestureRecognizerDelegate
     CGPoint center = self.view.center;
     center.y += 60;
     button2.center = center;
-    
-    /////////////////////////////////////////////////////////////////////////////
-    
-    self.d3AnimationController = [D3AnimationController create];
-    
-    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    pan.edges    = UIRectEdgeLeft;
-    pan.delegate = self;
-    [self.view addGestureRecognizer:pan];
 }
 
 
@@ -73,13 +64,9 @@ UIGestureRecognizerDelegate
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    static BOOL firstTime = NO;
-    if (!firstTime) {
-        firstTime = YES;
-        self.navigationController.delegate                                 = self.d3AnimationController;
-        self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-        self.navigationController.interactivePopGestureRecognizer.delegate = self.d3AnimationController;
-    }
+    D3AnimationController *controller = D3AnimationController.defaultController;
+    controller.navigationController = self.navigationController;
+    [self.view addGestureRecognizer:controller.edgePanGesture];
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -159,48 +146,6 @@ UIGestureRecognizerDelegate
     TransparentViewController *vc = [TransparentViewController create];
     [self.navigationController pushViewController:vc animated:YES];
     vc.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
-}
-
-
-/**
- *  Pan Gesture's handler
- */
-- (void)handlePan:(UIScreenEdgePanGestureRecognizer *)gesture
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    CGFloat width = gesture.view.frame.size.width;
-    
-    static UINavigationController *navigationController;
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        self.isGesture = YES;
-        [self.d3AnimationController startAsSwipe];
-        
-        navigationController = self.navigationController;
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else if (gesture.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gesture translationInView:gesture.view];
-        CGFloat percent = ABS(translation.x / width);
-        navigationController.navigationBar.alpha = 1.0 - percent;
-        
-        [self.d3AnimationController updateInteractiveTransition:percent];
-    }
-    else if (gesture.state == UIGestureRecognizerStateEnded ||
-             gesture.state == UIGestureRecognizerStateCancelled) {
-        self.isGesture = NO;
-        
-        CGPoint translation = [gesture translationInView:gesture.view];
-        CGPoint velocity    = [gesture velocityInView:gesture.view];
-        CGFloat percent     = MAX(0, translation.x + velocity.x * 0.25) / width;
-        
-        if (percent < 0.5 || gesture.state == UIGestureRecognizerStateCancelled) {
-            [self.d3AnimationController cancelInteractiveTransition];
-        }
-        else {
-            [self.d3AnimationController finishInteractiveTransition];
-        }
-    }
 }
 
 

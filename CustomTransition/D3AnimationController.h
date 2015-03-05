@@ -22,17 +22,11 @@ typedef void(^D3AnimationControllerEventBlock)(__typeof(self) self,
                                                NSDictionary *data);
 
 @property (nonatomic, assign, readonly) BOOL isSwipe;
+@property (nonatomic, strong, readonly) UIScreenEdgePanGestureRecognizer *edgePanGesture;
 
-+ (instancetype)create;
++ (instancetype)defaultController;
 
-+ (instancetype)createWithNavigationController:(UINavigationController *)navigationController;
-
-- (void)startAsSwipe;
-
-- (void)updateInteractiveTransition:(CGFloat)percent;
-
-- (void)cancelInteractiveTransition;
-
-- (void)finishInteractiveTransition;
+- (UINavigationController *)navigationController;
+- (void)setNavigationController:(UINavigationController *)navigationController;
 
 @end
