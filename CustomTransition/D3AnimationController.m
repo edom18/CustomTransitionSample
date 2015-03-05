@@ -171,7 +171,9 @@
     [containerView insertSubview:toVC.view
                     aboveSubview:fromVC.view];
     
-    [self startAnimation];
+    if (!self.isSwipe) {
+        [self startAnimation];
+    }
 }
 
 
@@ -220,7 +222,9 @@
     toVC.view.bounds = [self.transitionContext initialFrameForViewController:self.fromVC];//containerView.frame;
     toVC.view.alpha  = 0.0;
     
-    [self startAnimation];
+    if (!self.isSwipe) {
+        [self startAnimation];
+    }
 }
 
 
@@ -259,7 +263,10 @@
  */
 - (void)updateInteractiveTransition:(CGFloat)percent
 {
+    percent = MIN(1.0, MAX(0.0, percent));
+    self.progressPercent = percent;
     
+    [self updatePopAnimation];
 }
 
 
@@ -282,10 +289,12 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.toVC.view.frame     = self.transitionContext.containerView.frame; //[self.transitionContext finalFrameForViewController:self.toVC];
+    self.isSwipe = NO;
+    
+    self.toVC.view.frame     = [self.transitionContext finalFrameForViewController:self.toVC];
     self.toVC.view.transform = CGAffineTransformIdentity;
     
-    self.fromVC.view.frame     = self.transitionContext.containerView.frame; //[self.transitionContext finalFrameForViewController:self.fromVC];
+    self.fromVC.view.frame     = [self.transitionContext finalFrameForViewController:self.fromVC];
     self.fromVC.view.transform = CGAffineTransformIdentity;
     
     [self.transitionContext finishInteractiveTransition];
