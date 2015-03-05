@@ -199,7 +199,9 @@ static D3AnimationController *instance = nil;
         self.isCompleted = YES;
     }
     
-    [self.transitionContext updateInteractiveTransition:self.progressPercent];
+    if (!self.isCompleted) {
+        [self.transitionContext updateInteractiveTransition:self.progressPercent];
+    }
     
     if (self.currentOperation == UINavigationControllerOperationPush) {
         [self updatePushAnimation];
