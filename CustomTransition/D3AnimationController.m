@@ -497,6 +497,13 @@ static D3AnimationController *instance = nil;
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    self.type = [self checkTypeWithToViewController:toVC
+                                 fromViewController:fromVC];
+    
+    if (self.type == D3AnimationControllerTransitionTypeDefault) {
+        return nil;
+    }
+    
     if (operation == UINavigationControllerOperationPush ||
         operation == UINavigationControllerOperationPop) {
         self.currentOperation = operation;
