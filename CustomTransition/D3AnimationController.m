@@ -513,12 +513,41 @@ static D3AnimationController *instance = nil;
     return nil;
 }
 
+
+/**
+ *  Called to allow the delegate to return an interactive animator object for use during view controller transition.
+ *
+ *  @param navigationController UINavigationController
+ *  @param animationController  Animation controllor to use transition
+ *
+ *  @return Animator object
+ */
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
                          interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
     return self;
+}
+
+
+/**
+ *  Navigation controller event. this will be called when view controller will show.
+ */
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+
+/**
+ *  Navigation controller event. this will be called when view controller had been shown.
+ */
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 
