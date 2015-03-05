@@ -49,7 +49,7 @@ UIGestureRecognizerDelegate
     
     UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     pan.edges    = UIRectEdgeLeft;
-    pan.delegate = self.d3AnimationController;
+    pan.delegate = self;
     [self.view addGestureRecognizer:pan];
 }
 
@@ -145,6 +145,7 @@ UIGestureRecognizerDelegate
     static UINavigationController *navigationController;
     if (gesture.state == UIGestureRecognizerStateBegan) {
         self.isGesture = YES;
+        [self.d3AnimationController startAsSwipe];
         
         navigationController = self.navigationController;
         [self.navigationController popViewControllerAnimated:YES];
@@ -154,7 +155,7 @@ UIGestureRecognizerDelegate
         CGFloat percent = ABS(translation.x / width);
         navigationController.navigationBar.alpha = 1.0 - percent;
         
-        [self.animationController updateInteractiveTransition:percent];
+        [self.d3AnimationController updateInteractiveTransition:percent];
     }
     else if (gesture.state == UIGestureRecognizerStateEnded ||
              gesture.state == UIGestureRecognizerStateCancelled) {
@@ -165,10 +166,10 @@ UIGestureRecognizerDelegate
         CGFloat percent     = MAX(0, translation.x + velocity.x * 0.25) / width;
         
         if (percent < 0.5 || gesture.state == UIGestureRecognizerStateCancelled) {
-            [self.animationController cancelInteractiveTransition];
+            [self.d3AnimationController cancelInteractiveTransition];
         }
         else {
-            [self.animationController finishInteractiveTransition];
+            [self.d3AnimationController finishInteractiveTransition];
         }
     }
 }
