@@ -331,6 +331,8 @@ static D3AnimationController *instance = nil;
     percent = MIN(1.0, MAX(0.0, percent));
     self.progressPercent = percent;
     
+    [self.transitionContext updateInteractiveTransition:percent];
+    
     [self updatePopAnimation];
 }
 
