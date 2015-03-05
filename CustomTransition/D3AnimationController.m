@@ -4,6 +4,29 @@
 #import "ViewController.h"
 #import "TransparentViewController.h"
 
+/**
+ *  Make a colored image with size.
+ *
+ *  @param color a color image.
+ *  @param size  an image size.
+ *
+ *  @return colored an UIImage.
+ */
+UIImage* D3CreateColorImage(UIColor *color, CGSize size)
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, color.CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+
 @interface D3AnimationController ()
 
 typedef NS_ENUM(NSInteger, D3AnimationControllerTransitionType) {
@@ -133,26 +156,40 @@ static D3AnimationController *instance = nil;
     self.progressPercent = 0.0;
     self.isCompleted     = NO;
     
-    if ([self.fromVC isKindOfClass:TransparentViewController.class]) {
-        if ([self.toVC isKindOfClass:TransparentViewController.class]) {
+    self.type = [self checkTypeWithToViewController:self.toVC
+                                 fromViewController:self.fromVC];
+}
+
+
+/**
+ *  Check a transition type.
+ *
+ *  @param toVC   to view controller
+ *  @param fromVC from view controller
+ *
+ *  @return transition type
+ */
+- (D3AnimationControllerTransitionType)checkTypeWithToViewController:(UIViewController *)toVC
+                   fromViewController:(UIViewController *)fromVC
+{
+    if ([fromVC isKindOfClass:TransparentViewController.class]) {
+        if ([toVC isKindOfClass:TransparentViewController.class]) {
             // Transparent -> transparent
-            self.type = D3AnimationControllerTransitionTypeDefault;
+            return D3AnimationControllerTransitionTypeDefault;
         }
         else {
             // Transparent -> other
-            self.type = D3AnimationControllerTransitionTypeFromTransparent;
+            return D3AnimationControllerTransitionTypeFromTransparent;
         }
     }
-    else if ([self.fromVC isKindOfClass:ViewController.class]) {
+    else if ([fromVC isKindOfClass:ViewController.class]) {
         if ([self.toVC isKindOfClass:TransparentViewController.class]) {
             // Other -> transparent
-            self.type = D3AnimationControllerTransitionTypeToTransparent;
-        }
-        else if ([self.toVC isKindOfClass:ViewController.class]) {
-            // other -> other
-            self.type = D3AnimationControllerTransitionTypeDefault;
+            return D3AnimationControllerTransitionTypeToTransparent;
         }
     }
+    
+    return D3AnimationControllerTransitionTypeDefault;
 }
 
 
@@ -259,12 +296,21 @@ static D3AnimationController *instance = nil;
         }
         case D3AnimationControllerTransitionTypeToTransparent: {
             const CGFloat alpha = 1.0 - self.progressPercent;
-            self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            UIColor *color      = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            CGSize size         = self.navigationController.navigationBar.bounds.size;
+            size.height         = 64;
+            UIImage *backgroundImage = D3CreateColorImage(color, size);
+            [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
             break;
         }
         case D3AnimationControllerTransitionTypeFromTransparent: {
             const CGFloat alpha = self.progressPercent;
-            self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            UIColor *color      = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
+            CGSize size         = self.navigationController.navigationBar.bounds.size;
+            size.height         = 64;
+            UIImage *backgroundImage = D3CreateColorImage(color, size);
+            [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+            // self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:alpha];
             break;
         }
     }
