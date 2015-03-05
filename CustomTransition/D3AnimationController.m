@@ -6,6 +6,7 @@
 @property (nonatomic, assign) CGFloat time;
 @property (nonatomic, assign) CGFloat progressPercent;
 @property (nonatomic, assign, readwrite) BOOL isSwipe;
+@property (nonatomic, assign           ) BOOL isCompleted;
 @property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
 
 @property (nonatomic, assign) UINavigationControllerOperation currentOperation;
@@ -29,8 +30,8 @@
 {
     self = [super init];
     if (self) {
-        self.isSwipe = NO;
-        
+        self.isSwipe     = NO;
+        self.isCompleted = NO;
         
         self.edgePanGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(handlePan:)];
@@ -74,6 +75,17 @@
 
 
 /**
+ *  Prefare for animation.
+ */
+- (void)prepareForAnimation
+{
+    self.time            = 0.0;
+    self.progressPercent = 0.0;
+    self.isCompleted     = NO;
+}
+
+
+/**
  *  Handling screen pan gesuture
  *
  *  @param gesture
@@ -105,6 +117,10 @@
  */
 - (void)updateProgress:(CADisplayLink *)displayLink
 {
+    if (self.isCompleted) {
+        return;
+    }
+    
     const CGFloat targetDuration  = [self transitionDuration:self.transitionContext];
     const CGFloat duration        = displayLink.duration;
     const NSInteger frameInterval = displayLink.frameInterval;
@@ -113,13 +129,12 @@
     self.time            += deltaTime;
     self.progressPercent = self.time / targetDuration;
     
-    [self.transitionContext updateInteractiveTransition:self.progressPercent];
-    
     if (self.progressPercent >= 1.0) {
-        [displayLink invalidate];
         self.progressPercent = 1.0;
-        [self finishInteractiveTransition];
+        self.isCompleted = YES;
     }
+    
+    [self.transitionContext updateInteractiveTransition:self.progressPercent];
     
     if (self.currentOperation == UINavigationControllerOperationPush) {
         [self updatePushAnimation];
@@ -127,8 +142,16 @@
     else if (self.currentOperation == UINavigationControllerOperationPop) {
         [self updatePopAnimation];
     }
+    
+    if (self.isCompleted) {
+        [displayLink invalidate];
+        [self finishInteractiveTransition];
+    }
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 
 /**
  *  Start push animation
@@ -177,6 +200,9 @@
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+
 /**
  *  Start pop animation.
  */
@@ -190,7 +216,11 @@
     [containerView insertSubview:toVC.view
                     belowSubview:fromVC.view];
     
-    toVC.view.alpha = 0.0;
+    // for `To VC`
+    toVC.view.bounds = [self.transitionContext initialFrameForViewController:self.fromVC]; //containerView.frame;
+    CGAffineTransform toTransform = CGAffineTransformMakeScale(0.9, 0.9);
+    toVC.view.transform           = toTransform;
+    toVC.view.alpha   = 0.0;
     
     [self startAnimation];
 }
@@ -204,7 +234,7 @@
     UIViewController *fromVC = self.fromVC;
     UIViewController *toVC   = self.toVC;
     
-    const CGFloat base  = 0.1;
+    const CGFloat base  = 0.9;
     const CGFloat base2 = 1.0 - base;
     const CGFloat delta = base * self.progressPercent;
     
@@ -253,6 +283,12 @@
 - (void)finishInteractiveTransition
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    self.toVC.view.frame     = self.transitionContext.containerView.frame; //[self.transitionContext finalFrameForViewController:self.toVC];
+    self.toVC.view.transform = CGAffineTransformIdentity;
+    
+    self.fromVC.view.frame     = self.transitionContext.containerView.frame; //[self.transitionContext finalFrameForViewController:self.fromVC];
+    self.fromVC.view.transform = CGAffineTransformIdentity;
     
     [self.transitionContext finishInteractiveTransition];
     [self.transitionContext completeTransition:YES];
@@ -315,8 +351,7 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    self.time            = 0.0;
-    self.progressPercent = 0.0;
+    [self prepareForAnimation];
     self.transitionContext = transitionContext;
     [self animateTransition:transitionContext];
 }
