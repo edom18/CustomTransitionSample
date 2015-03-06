@@ -595,6 +595,10 @@ static D3AnimationController *instance = nil;
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
+    if (self.navigationController.viewControllers.count == 1) {
+        return NO;
+    }
+    
     return YES;
 }
 
