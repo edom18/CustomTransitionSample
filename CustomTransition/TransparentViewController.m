@@ -48,7 +48,7 @@
     
     D3AnimationController *controller = D3AnimationController.defaultController;
     controller.navigationController = self.navigationController;
-    [self.view addGestureRecognizer:controller.edgePanGesture];
+    // [self.view addGestureRecognizer:controller.edgePanGesture];
 }
 
 
