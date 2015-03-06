@@ -89,7 +89,7 @@ static D3AnimationController *instance = nil;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-#pragma -
+#pragma mark - Dynamic properties
 
 - (UINavigationController *)navigationController
 {
@@ -109,6 +109,19 @@ static D3AnimationController *instance = nil;
     _navigationController.delegate                                 = self;
     _navigationController.interactivePopGestureRecognizer.enabled  = YES;
     _navigationController.interactivePopGestureRecognizer.delegate = self;
+}
+
+
+/**
+ *  Check the view controller and return `YES` when it should be attached gesture.
+ *
+ *  @param viewController target view controller
+ *
+ *  @return return `YES` if the vc should be attached gesture.
+ */
+- (BOOL)shouldAddGesture:(UIViewController *)viewController
+{
+    return [viewController isKindOfClass:TransparentViewController.class];
 }
 
 
@@ -512,6 +525,11 @@ static D3AnimationController *instance = nil;
     if (operation == UINavigationControllerOperationPush ||
         operation == UINavigationControllerOperationPop) {
         self.currentOperation = operation;
+        
+        if ([self shouldAddGesture:toVC]) {
+            [toVC.view addGestureRecognizer:self.edgePanGesture];
+        }
+    
         return self;
     }
     
