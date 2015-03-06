@@ -536,28 +536,6 @@ static D3AnimationController *instance = nil;
 }
 
 
-/**
- *  Navigation controller event. this will be called when view controller will show.
- */
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-}
-
-
-/**
- *  Navigation controller event. this will be called when view controller had been shown.
- */
-- (void)navigationController:(UINavigationController *)navigationController
-       didShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-}
-
-
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UIViewControllerAnimatedTransitioning
 
