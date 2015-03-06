@@ -66,15 +66,6 @@
     TransparentViewController *vc = [TransparentViewController create];
     [self.navigationController pushViewController:vc animated:YES];
     vc.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
-    
-    // self.nextViewController = [[ViewController alloc] init];
-    // self.nextViewController.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
-    
-    // transitionDelegate is to be used in modal view transition.
-    // self.nextViewController.transitioningDelegate = self;
-    
-    // [self.navigationController pushViewController:self.nextViewController
-    //                                      animated:YES];
 }
 
 @end
