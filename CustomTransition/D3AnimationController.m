@@ -205,6 +205,8 @@ static D3AnimationController *instance = nil;
     CGFloat width = gesture.view.frame.size.width;
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"Start as swipe");
+        
         [self startAsSwipe];
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
@@ -215,6 +217,9 @@ static D3AnimationController *instance = nil;
     }
     else if (gesture.state == UIGestureRecognizerStateEnded ||
              gesture.state == UIGestureRecognizerStateCancelled) {
+        
+        NSLog(@"end or canceled gesture.");
+        
         CGPoint translation = [gesture translationInView:gesture.view];
         CGPoint velocity    = [gesture velocityInView:gesture.view];
         CGFloat percent     = MAX(0, translation.x + velocity.x * 0.25) / width;
