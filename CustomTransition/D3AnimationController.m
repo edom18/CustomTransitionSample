@@ -109,6 +109,8 @@ static D3AnimationController *instance = nil;
     _navigationController.delegate                                 = self;
     _navigationController.interactivePopGestureRecognizer.enabled  = YES;
     _navigationController.interactivePopGestureRecognizer.delegate = self;
+    
+    _navigationController.transitioningDelegate = self;
 }
 
 
