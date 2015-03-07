@@ -3,6 +3,7 @@
 
 #import "FadeAnimationController.h"
 #import "D3AnimationController.h"
+#import "D3ModalAnimationController.h"
 #import "TransparentViewController.h"
 
 
@@ -18,8 +19,6 @@ UIGestureRecognizerDelegate
 @property (nonatomic, strong) FadeAnimationController *animationController;
 
 @property (nonatomic, assign) BOOL isGesture;
-
-@property (nonatomic, strong) D3AnimationController *d3AnimationController;
 
 @end
 
@@ -54,6 +53,42 @@ UIGestureRecognizerDelegate
     CGPoint center = self.view.center;
     center.y += 60;
     button2.center = center;
+    
+    
+    /////////////////////////////////////////////////////////////////////////////
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                               target:self
+                                                                               action:@selector(add:)];
+    self.navigationItem.rightBarButtonItem = barButton;
+}
+
+- (void)add:(id)sender
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    const CGFloat r = arc4random_uniform(100) / 100.0;
+    const CGFloat g = arc4random_uniform(100) / 100.0;
+    const CGFloat b = arc4random_uniform(100) / 100.0;
+    
+    ViewController *vc = [[ViewController alloc] init];
+    vc.view.backgroundColor = [UIColor colorWithRed:r green:g blue:b alpha:1.0];
+    
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    nvc.transitioningDelegate = D3ModalAnimationController.defaultController;
+    
+    vc.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                        target:self
+                                                                                        action:@selector(close:)];
+    
+    [self.navigationController presentViewController:nvc animated:YES completion:nil];
+}
+
+- (void)close:(id)sender
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -66,7 +101,6 @@ UIGestureRecognizerDelegate
     
     D3AnimationController *controller = D3AnimationController.defaultController;
     controller.navigationController = self.navigationController;
-    // [self.view addGestureRecognizer:controller.edgePanGesture];
 }
 
 /////////////////////////////////////////////////////////////////////////////
