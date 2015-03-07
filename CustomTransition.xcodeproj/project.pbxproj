@@ -17,6 +17,7 @@
 		5C8C99131AA5921400442241 /* FadeAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C99121AA5921400442241 /* FadeAnimationController.m */; };
 		5CDC5C641AA7CEA100C6C498 /* D3AnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC5C631AA7CEA100C6C498 /* D3AnimationController.m */; };
 		5CDC5C991AA8675400C6C498 /* TransparentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC5C981AA8675400C6C498 /* TransparentViewController.m */; };
+		605564C21AAB3E760001AD27 /* D3ModalAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 605564C11AAB3E760001AD27 /* D3ModalAnimationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,8 @@
 		5CDC5C631AA7CEA100C6C498 /* D3AnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = D3AnimationController.m; sourceTree = "<group>"; };
 		5CDC5C971AA8675400C6C498 /* TransparentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentViewController.h; sourceTree = "<group>"; };
 		5CDC5C981AA8675400C6C498 /* TransparentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentViewController.m; sourceTree = "<group>"; };
+		605564C01AAB3E760001AD27 /* D3ModalAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = D3ModalAnimationController.h; path = CustomTransition/D3ModalAnimationController.h; sourceTree = "<group>"; };
+		605564C11AAB3E760001AD27 /* D3ModalAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = D3ModalAnimationController.m; path = CustomTransition/D3ModalAnimationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,8 @@
 		5C8C98DC1AA579A100442241 = {
 			isa = PBXGroup;
 			children = (
+				605564C01AAB3E760001AD27 /* D3ModalAnimationController.h */,
+				605564C11AAB3E760001AD27 /* D3ModalAnimationController.m */,
 				5C8C98E71AA579A100442241 /* CustomTransition */,
 				5C8C99011AA579A100442241 /* CustomTransitionTests */,
 				5C8C98E61AA579A100442241 /* Products */,
@@ -237,6 +242,7 @@
 				5C8C98F11AA579A100442241 /* ViewController.m in Sources */,
 				5C8C99131AA5921400442241 /* FadeAnimationController.m in Sources */,
 				5C8C98EE1AA579A100442241 /* AppDelegate.m in Sources */,
+				605564C21AAB3E760001AD27 /* D3ModalAnimationController.m in Sources */,
 				5CDC5C641AA7CEA100C6C498 /* D3AnimationController.m in Sources */,
 				5C8C98EB1AA579A100442241 /* main.m in Sources */,
 				5CDC5C991AA8675400C6C498 /* TransparentViewController.m in Sources */,
@@ -361,6 +367,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = CustomTransition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -372,6 +379,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = CustomTransition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
