@@ -3,7 +3,9 @@
 
 @interface D3ModalAnimationController : NSObject
 <
-UIViewControllerTransitioningDelegate
+UIViewControllerTransitioningDelegate,
+UIViewControllerAnimatedTransitioning,
+UIViewControllerInteractiveTransitioning
 >
 
 /**

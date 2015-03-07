@@ -19,14 +19,18 @@ static D3ModalAnimationController *instance;
 /////////////////////////////////////////////////////////////////////////////
 #pragma mark - UIViewControllerTransitioningDelegate
 
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
-                                                      presentingViewController:(UIViewController *)presenting
-                                                          sourceViewController:(UIViewController *)source
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    return nil;
-}
+//- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
+//                                                      presentingViewController:(UIViewController *)presenting
+//                                                          sourceViewController:(UIViewController *)source
+//{
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    
+//    return nil;
+//}
+
+
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark - For presentation
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
                                                                   presentingController:(UIViewController *)presenting
@@ -44,6 +48,9 @@ static D3ModalAnimationController *instance;
     return self;
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+#pragma mark - For dismissing
 
 /**
  *  It will be called when view controller is going to dismiss.
