@@ -127,9 +127,6 @@ static D3AnimationController *instance = nil;
 }
 
 
-/////////////////////////////////////////////////////////////////////////////
-#pragma mark - Dynamic properties.
-
 /**
  *  From view controller
  */
